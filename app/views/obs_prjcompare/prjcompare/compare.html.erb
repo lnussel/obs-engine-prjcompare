@@ -1,0 +1,49 @@
+<% project_bread_crumb('Prjcompare')%>
+
+<div class="grid_16 alpha">
+  <div class="box box-shadow">
+    <h2><%= params[:project] %> vs <%= params[:project2] %> (<%= @mode %>)</h2>
+    <ul>
+    <% @project.compare_modes.each do |m| %>
+      <li><%= link_to m, prjcompare_compare_path(params[:project], params[:project2], { mode: m}) %></li>
+    <% end %>
+    </ul>
+    <table>
+      <thead>
+        <tr>
+          <th>Package</th>
+          <% @pkglist.projects.each do |prjname| %>
+            <th><%= prjname %></th>
+          <% end  %>
+        </tr>
+      </thead>
+      <tbody>
+        <% @pkglist.packages.each do |name, columns| %>
+          <tr>
+            <td><%= name %></td>
+            <% (0..columns.length).each do |i| %>
+              <td>
+                <% if params[:project] != @pkglist.projects[i] %>
+                  <%= link_to(main_app.url_for(
+                    :controller => "webui/package",
+                    :action => :rdiff,
+                    :package => name,
+                    :project => params[:project],
+                    :oproject => @pkglist.projects[i],
+                    :opackage => name,
+                    )) do %>
+                  <%= columns[i] %>
+                  <% end  %>
+              <% else %>
+                  <%= columns[i] %>
+              <% end  %>
+              </td>
+            <% end  %>
+          <tr>
+        <% end  %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<%#= vim:sw=2 et
+%>

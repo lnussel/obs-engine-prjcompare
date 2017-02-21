@@ -1,0 +1,19 @@
+<% project_bread_crumb('Prjcompare')%>
+
+<div class="grid_16 alpha">
+  <div class="box box-shadow">
+      <h2><%= @project %></h2>
+      <ul>
+        <% @diff_projects.each do |prj| %>
+          <li><%= link_to "compare to #{prj}", prjcompare_compare_path(@project.name, prj) %></li>
+        <% end %>
+      </ul>
+      <ul>
+        <% @project.packages.each do |pkg| %>
+          <li><%= link_to pkg.name, main_app.package_show_path(params[:project], pkg.name) %>: <%= @project.verifymd5(pkg.name) %></li>
+        <% end  %>
+      </ul>
+  </div>
+</div>
+<%#= vim:sw=2 et
+%>
